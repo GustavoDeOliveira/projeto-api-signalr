@@ -28,18 +28,6 @@ namespace TesteSignalR
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-                .AddJsonOptions(opt => 
-                {
-                    opt.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
-                    opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-                });
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TesteSignalR", Version = "v1" });
-            });
-
             services.AddSignalR();
 
             //services.AddHttpsRedirection(options =>
@@ -51,9 +39,11 @@ namespace TesteSignalR
             {
                 options.AddPolicy("ClientPermission", policy =>
                 {
+                    string[] origins = Configuration.GetValue<string[]>("AllowedOrigins");
+                    if (origins == null || origins.Length == 0) origins = new string[] { "http://localhost:3000" };
                     policy.AllowAnyHeader()
                         .AllowAnyMethod()
-                        .WithOrigins("http://localhost:3000")
+                        .WithOrigins(origins)
                         .AllowCredentials();
                 });
             });
@@ -65,8 +55,6 @@ namespace TesteSignalR
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("v1/swagger.json", "TesteSignalR v1"));
             }
 
             app.UseHttpsRedirection();
@@ -79,9 +67,6 @@ namespace TesteSignalR
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
-                endpoints.MapHub<StreamingHub>("hub/streaming");
-                endpoints.MapHub<LogMessageHub>("hub/message");
                 endpoints.MapHub<CoordinatesHub>("hub/coordinates");
             });
         }
