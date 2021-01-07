@@ -1,0 +1,43 @@
+version: '3'
+services:
+    front1:
+        build:
+            dockerfile: Dockerfile
+            context: .\frontend\
+        image: teste-react:latest
+        container_name: front-signalr-1
+        ports:
+            - "4000:3000"
+        networks: 
+            - production-network
+        depends_on:
+            - "api"
+            
+    front2:
+        build:
+            dockerfile: Dockerfile
+            context: .\frontend\
+        image: teste-react:latest
+        container_name: front-signalr-2
+        ports:
+            - "4001:3000"
+        networks: 
+            - production-network
+        depends_on:
+            - "api"
+
+    api:
+        build:
+            dockerfile: TesteSignalR/Dockerfile
+            context: TesteSignalR
+        image: testesignalr:dev
+        container_name: api-signalr
+        ports:
+            - "80"
+            - "443"
+        networks: 
+            - production-network
+
+networks: 
+    production-network:
+        driver: bridge
