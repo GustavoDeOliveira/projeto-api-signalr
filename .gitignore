@@ -1,9 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-#BACKEND
-/APISignalR/bin/**
-/APISignalR/obj/**
 /.vscode/**
+
+#BACKEND
+/TesteSignalR/.vs/**
+/TesteSignalR/TesteSignalR/bin/**
+/TesteSignalR/TesteSignalR/obj/**
 
 #FRONTEND
 # dependencies
