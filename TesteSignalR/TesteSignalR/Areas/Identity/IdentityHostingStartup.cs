@@ -17,10 +17,17 @@ namespace TesteSignalR.Areas.Identity
         {
             builder.ConfigureServices((context, services) => {
                 services.AddDbContext<TesteSignalRContext>(options =>
-                    options.UseSqlite(
+                    options.UseSqlServer(
                         context.Configuration.GetConnectionString("TesteSignalRContextConnection")));
 
-                services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddDefaultIdentity<User>(options => 
+                    {
+                        if (context.HostingEnvironment.EnvironmentName == "Develompent") {
+                            options.Password.RequireDigit = false;
+                            options.Password.RequiredLength = 3;
+                        }
+                        else options.SignIn.RequireConfirmedAccount = true;
+                    })
                     .AddEntityFrameworkStores<TesteSignalRContext>();
             });
         }

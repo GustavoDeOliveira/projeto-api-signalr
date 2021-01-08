@@ -179,3 +179,5 @@ C:\Users\gustavo.oliveira\Projetos\teste-signalr\TesteSignalR\TesteSignalR\obj\D
 C:\Users\gustavo.oliveira\Projetos\teste-signalr\TesteSignalR\TesteSignalR\obj\Debug\net5.0\Razor\Pages\_ViewStart.cshtml.g.cs
 C:\Users\gustavo.oliveira\Projetos\teste-signalr\TesteSignalR\TesteSignalR\obj\Debug\net5.0\TesteSignalR.RazorTargetAssemblyInfo.cs
 C:\Users\gustavo.oliveira\Projetos\teste-signalr\TesteSignalR\TesteSignalR\obj\Debug\net5.0\TesteSignalR.Views.pdb
+C:\Users\gustavo.oliveira\Projetos\teste-signalr\TesteSignalR\TesteSignalR\bin\Debug\net5.0\AutoMapper.dll
+C:\Users\gustavo.oliveira\Projetos\teste-signalr\TesteSignalR\TesteSignalR\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
