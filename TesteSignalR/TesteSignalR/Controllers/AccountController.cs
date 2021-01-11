@@ -3,9 +3,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using TesteSignalR.Areas.Identity.Data;
 using TesteSignalR.Models;
@@ -13,71 +18,96 @@ using TesteSignalR.Services;
 
 namespace TesteSignalR.Controllers
 {
-    [Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
 
-        public AccountController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration)
         {
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
+            _configuration = configuration;
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(UserRegistrationModel userModel)
         {
-            if (!ModelState.IsValid)
+            var response = new Response();
+            if (ModelState.IsValid)
             {
-                return BadRequest(ModelState.Values.Select(v => v.Errors.Select(e => e.ErrorMessage)));
-            }
+                if (string.IsNullOrEmpty(userModel.UserName)) userModel.UserName = userModel.Email;
 
-            if (string.IsNullOrEmpty(userModel.UserName)) userModel.UserName = userModel.Email;
+                var user = _mapper.Map<User>(userModel);
 
-            var user = _mapper.Map<User>(userModel);
-
-            var result = await _userManager.CreateAsync(user, userModel.Password);
-            if (!result.Succeeded)
-            {
-                return BadRequest(result.Errors);
-            }
-
-            return Ok();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(UserLoginModel userModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(userModel);
-            }
-
-            var result = await _signInManager.PasswordSignInAsync(userModel.UserName, userModel.Password, userModel.RememberMe, false);
-            if (result.Succeeded)
-            {
-                return Ok();
+                var result = await _userManager.CreateAsync(user, userModel.Password);
+                if (result.Succeeded)
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    response.Errors = result.Errors.Select(e => e.Description);
+                }
             }
             else
             {
-                return BadRequest();
+                response.Errors = ExtractModelStateErrors();
             }
+            return BadRequest(response);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(UserLoginModel userModel)
+        {
+            var response = new LoginResponse();
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(userModel.UserName);
+                if (user != null && await _userManager.CheckPasswordAsync(user, userModel.Password))
+                {
+                    var userRoles = await _userManager.GetRolesAsync(user);
+
+                    var authClaims = new Claim[]
+                    {
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    };
+
+                    var allClaims = authClaims.Concat(userRoles.Select(c => new Claim(ClaimTypes.Role, c)));
+                    var expireDate = DateTime.Now.AddHours(3);
+                    response.Token = WriteJwtToken(allClaims, expireDate);
+                    response.Expires = expireDate.ToString("yyyy-MM-dd hh:mm:ss");
+                    return Ok(response);
+                }
+                else
+                {
+                    response.Errors = new string[] { "Not allowed" };
+                }
+            }
+            else
+            {
+                response.Errors = ExtractModelStateErrors();
+            }
+            return BadRequest(response);
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
 
-            return Ok();
+            return Ok(new Response());
         }
 
         [HttpGet]
@@ -88,6 +118,29 @@ namespace TesteSignalR.Controllers
             if (user == null || !user.IsAuthenticated)
                 return Ok("Not logged in");
             return Ok("Logged in as " + user.Name);
+        }
+
+        private IEnumerable<string> ExtractModelStateErrors()
+        {
+            return ModelState?.Values
+                    .SelectMany(v => v.Errors
+                        .Select(e => e.ErrorMessage))
+                    ?? Enumerable.Empty<string>();
+        }
+
+        private string WriteJwtToken(IEnumerable<Claim> authClaims, DateTime expires)
+        {
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWT:ValidIssuer"],
+                audience: _configuration["JWT:ValidAudience"],
+                expires: expires,
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

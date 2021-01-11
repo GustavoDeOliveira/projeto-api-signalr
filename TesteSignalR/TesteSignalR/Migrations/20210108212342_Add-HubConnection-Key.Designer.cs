@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TesteSignalR.Data;
 
 namespace TesteSignalR.Migrations
 {
     [DbContext(typeof(TesteSignalRContext))]
-    partial class TesteSignalRContextModelSnapshot : ModelSnapshot
+    [Migration("20210108212342_Add-HubConnection-Key")]
+    partial class AddHubConnectionKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

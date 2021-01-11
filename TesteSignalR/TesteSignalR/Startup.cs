@@ -1,27 +1,25 @@
-using TesteSignalR.Hubs;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Text.Json;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using TesteSignalR.Areas.Identity.Data;
-using TesteSignalR.Models;
-using TesteSignalR.Data;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using TesteSignalR.Areas.Identity.Data;
+using TesteSignalR.Configuration;
+using TesteSignalR.Hubs;
+using TesteSignalR.Models;
+using TesteSignalR.Providers;
 
 namespace TesteSignalR
 {
@@ -47,9 +45,45 @@ namespace TesteSignalR
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TesteSignalR", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Insira o JWT com o Bearer no campo",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+                });
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ClientPermission", policy =>
+                {
+                    string[] origins = Configuration.GetValue<string[]>("AllowedOrigins");
+                    policy.AllowAnyHeader()
+                            .WithMethods("GET", "POST")
+                            .AllowCredentials();
+                    if (origins != null && origins.Length > 0)
+                        policy.WithOrigins(origins);
+                    else policy.WithOrigins("http://localhost:3000");
+                });
             });
 
             services.AddSignalR();
+
+            services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
 
             //services.AddHttpsRedirection(options =>
             //{
@@ -79,33 +113,43 @@ namespace TesteSignalR
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+
+            // Adding Jwt Bearer  
+            .AddJwtBearer(options =>
             {
-                var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("JWTSecret"));
-                options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["JWT:ValidAudience"],
+                    ValidIssuer = Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                };
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+
+                        // Se a mensagem é direcionada ao hub e usar o protocolo ws, o token é passado pela url
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/hub")))
+                        {
+                            // Então precisamos ler o token a partir da QueryString
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("ClientPermission", policy =>
-                {
-                    string[] origins = Configuration.GetValue<string[]>("AllowedOrigins");
-                    policy.AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowCredentials();
-                    if (origins != null && origins.Length > 0)
-                        policy.WithOrigins(origins);
-                    else policy.WithOrigins("http://localhost:3000");
-                });
-            });
+            services.TryAddEnumerable(ServiceDescriptor
+                .Singleton<IPostConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

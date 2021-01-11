@@ -28,6 +28,7 @@ namespace TesteSignalR.Areas.Identity
                         }
                         else options.SignIn.RequireConfirmedAccount = true;
                     })
+                    .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<TesteSignalRContext>();
             });
         }

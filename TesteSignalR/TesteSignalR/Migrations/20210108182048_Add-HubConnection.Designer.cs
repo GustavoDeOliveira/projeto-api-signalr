@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TesteSignalR.Data;
 
 namespace TesteSignalR.Migrations
 {
     [DbContext(typeof(TesteSignalRContext))]
-    partial class TesteSignalRContextModelSnapshot : ModelSnapshot
+    [Migration("20210108182048_Add-HubConnection")]
+    partial class AddHubConnection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,12 +224,14 @@ namespace TesteSignalR.Migrations
             modelBuilder.Entity("TesteSignalR.Data.HubConnection", b =>
                 {
                     b.Property<string>("UserAId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserBId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("UserAId", "UserBId");
+                    b.HasIndex("UserAId");
 
                     b.HasIndex("UserBId");
 
