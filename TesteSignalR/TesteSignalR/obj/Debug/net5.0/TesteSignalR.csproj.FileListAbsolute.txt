@@ -181,3 +181,4 @@ C:\Users\gustavo.oliveira\Projetos\teste-signalr\TesteSignalR\TesteSignalR\obj\D
 C:\Users\gustavo.oliveira\Projetos\teste-signalr\TesteSignalR\TesteSignalR\obj\Debug\net5.0\TesteSignalR.Views.pdb
 C:\Users\gustavo.oliveira\Projetos\teste-signalr\TesteSignalR\TesteSignalR\bin\Debug\net5.0\AutoMapper.dll
 C:\Users\gustavo.oliveira\Projetos\teste-signalr\TesteSignalR\TesteSignalR\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\gustavo.oliveira\Projetos\teste-signalr\TesteSignalR\TesteSignalR\bin\Debug\net5.0\web.config

@@ -157,12 +157,12 @@ namespace TesteSignalR
         {
             if (env.IsDevelopment())
             {
+            }
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("v1/swagger.json", "TesteSignalR v1"));
-            }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

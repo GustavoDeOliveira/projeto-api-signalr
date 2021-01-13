@@ -68,6 +68,19 @@
           "Microsoft.AspNetCore.App"
         ]
       },
+      "Microsoft.AspNetCore.Connections.Abstractions/3.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Features": "3.0.0",
+          "System.IO.Pipelines": "4.6.0"
+        },
+        "compile": {
+          "lib/netcoreapp3.0/Microsoft.AspNetCore.Connections.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/Microsoft.AspNetCore.Connections.Abstractions.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.Cryptography.Internal/5.0.1": {
         "type": "package",
         "compile": {
@@ -99,6 +112,45 @@
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.AspNetCore.Html.Abstractions.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.Http.Connections.Client/3.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Connections.Common": "3.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "3.0.0",
+          "Microsoft.Extensions.Options": "3.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.1/Microsoft.AspNetCore.Http.Connections.Client.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/Microsoft.AspNetCore.Http.Connections.Client.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.Http.Connections.Common/3.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Connections.Abstractions": "3.0.0"
+        },
+        "compile": {
+          "lib/netcoreapp3.0/Microsoft.AspNetCore.Http.Connections.Common.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/Microsoft.AspNetCore.Http.Connections.Common.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.Http.Features/3.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "3.0.0",
+          "System.IO.Pipelines": "4.6.0"
+        },
+        "compile": {
+          "lib/netcoreapp3.0/Microsoft.AspNetCore.Http.Features.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/Microsoft.AspNetCore.Http.Features.dll": {}
         }
       },
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore/5.0.1": {
@@ -172,6 +224,40 @@
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.AspNetCore.Razor.Runtime.dll": {}
+        }
+      },
+      "Microsoft.Azure.SignalR/1.4.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Connections.Client": "3.0.0",
+          "Microsoft.Azure.SignalR.Protocols": "1.4.0",
+          "System.IO.Pipelines": "4.6.0",
+          "System.IdentityModel.Tokens.Jwt": "5.5.0"
+        },
+        "compile": {
+          "lib/netcoreapp3.0/Microsoft.Azure.SignalR.Common.dll": {},
+          "lib/netcoreapp3.0/Microsoft.Azure.SignalR.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/Microsoft.Azure.SignalR.Common.dll": {},
+          "lib/netcoreapp3.0/Microsoft.Azure.SignalR.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
+      "Microsoft.Azure.SignalR.Protocols/1.4.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "2.1.0",
+          "System.Buffers": "4.5.0",
+          "System.Memory": "4.5.3"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Azure.SignalR.Protocols.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Azure.SignalR.Protocols.dll": {}
         }
       },
       "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
@@ -1280,6 +1366,15 @@
           "Microsoft.AspNetCore.App"
         ]
       },
+      "System.Buffers/4.5.0": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/_._": {}
+        }
+      },
       "System.Collections/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -1696,6 +1791,15 @@
         },
         "runtime": {
           "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll": {}
+        }
+      },
+      "System.IO.Pipelines/4.6.0": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.0/System.IO.Pipelines.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/System.IO.Pipelines.dll": {}
         }
       },
       "System.Linq/4.3.0": {
@@ -2496,6 +2600,23 @@
         "microsoft.aspnetcore.authentication.openidconnect.nuspec"
       ]
     },
+    "Microsoft.AspNetCore.Connections.Abstractions/3.0.0": {
+      "sha512": "GaqeOcVVMTf4X/joSuNku+g23M+Y5Tx0xN4vOS7A6OwNujXJXetMnDBC+u6CAaf0CECB4PII2+t+WAQUlJGFTw==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.connections.abstractions/3.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.0/Microsoft.AspNetCore.Connections.Abstractions.dll",
+        "lib/netcoreapp3.0/Microsoft.AspNetCore.Connections.Abstractions.xml",
+        "lib/netstandard2.0/Microsoft.AspNetCore.Connections.Abstractions.dll",
+        "lib/netstandard2.0/Microsoft.AspNetCore.Connections.Abstractions.xml",
+        "lib/netstandard2.1/Microsoft.AspNetCore.Connections.Abstractions.dll",
+        "lib/netstandard2.1/Microsoft.AspNetCore.Connections.Abstractions.xml",
+        "microsoft.aspnetcore.connections.abstractions.3.0.0.nupkg.sha512",
+        "microsoft.aspnetcore.connections.abstractions.nuspec"
+      ]
+    },
     "Microsoft.AspNetCore.Cryptography.Internal/5.0.1": {
       "sha512": "VGfj77RBkyWpPxvX6oSghE3DPObvg171HRdwr/t3aJQ9Y5cgaZE8BUNLhHZ0yBFa218r7e9Qou+DLGfRtve4CQ==",
       "type": "package",
@@ -2545,6 +2666,51 @@
         "lib/netstandard2.0/Microsoft.AspNetCore.Html.Abstractions.xml",
         "microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
         "microsoft.aspnetcore.html.abstractions.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.Http.Connections.Client/3.0.0": {
+      "sha512": "866ROb19nLihGEhWFeGznfLz28scbc2mM/ICOxU2mJsqGJ8I0XRkSzveRBCHrnoiiDI9g9OTCer8j0w0X+O/gQ==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.http.connections.client/3.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Connections.Client.dll",
+        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Connections.Client.xml",
+        "lib/netstandard2.1/Microsoft.AspNetCore.Http.Connections.Client.dll",
+        "lib/netstandard2.1/Microsoft.AspNetCore.Http.Connections.Client.xml",
+        "microsoft.aspnetcore.http.connections.client.3.0.0.nupkg.sha512",
+        "microsoft.aspnetcore.http.connections.client.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.Http.Connections.Common/3.0.0": {
+      "sha512": "X38Amqn+5qOzLWXGVNiAjOODmlWsVeM6qrL3btJBCdH9Xmc1+lwiTmp11iG8XKCAZxsYGkIgXcBKEduTPUOoTA==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.http.connections.common/3.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.0/Microsoft.AspNetCore.Http.Connections.Common.dll",
+        "lib/netcoreapp3.0/Microsoft.AspNetCore.Http.Connections.Common.xml",
+        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Connections.Common.dll",
+        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Connections.Common.xml",
+        "microsoft.aspnetcore.http.connections.common.3.0.0.nupkg.sha512",
+        "microsoft.aspnetcore.http.connections.common.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.Http.Features/3.0.0": {
+      "sha512": "BMdL2GrpKp0wvDjIvbdaTMDlGW/LFAzMKf9vovMKRxJFhvJimvvw+cMDefeMjMqQcGYyI78N2iR4Ouiv2IZ/aw==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.http.features/3.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.0/Microsoft.AspNetCore.Http.Features.dll",
+        "lib/netcoreapp3.0/Microsoft.AspNetCore.Http.Features.xml",
+        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Features.dll",
+        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Features.xml",
+        "microsoft.aspnetcore.http.features.3.0.0.nupkg.sha512",
+        "microsoft.aspnetcore.http.features.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Identity.EntityFrameworkCore/5.0.1": {
@@ -2660,6 +2826,40 @@
         "lib/netstandard2.0/Microsoft.AspNetCore.Razor.Runtime.xml",
         "microsoft.aspnetcore.razor.runtime.2.2.0.nupkg.sha512",
         "microsoft.aspnetcore.razor.runtime.nuspec"
+      ]
+    },
+    "Microsoft.Azure.SignalR/1.4.0": {
+      "sha512": "sXyFjm143MWO+09mQFwKbr9eIfGo4EFkzLvKS7hRS1jIIXqIl1T4fJKvK6PCS/jUj6v2HjYmbOTG4auHWJSEaA==",
+      "type": "package",
+      "path": "microsoft.azure.signalr/1.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.0/Microsoft.Azure.SignalR.Common.dll",
+        "lib/netcoreapp3.0/Microsoft.Azure.SignalR.Common.xml",
+        "lib/netcoreapp3.0/Microsoft.Azure.SignalR.dll",
+        "lib/netcoreapp3.0/Microsoft.Azure.SignalR.xml",
+        "lib/netstandard2.0/Microsoft.Azure.SignalR.Common.dll",
+        "lib/netstandard2.0/Microsoft.Azure.SignalR.Common.xml",
+        "lib/netstandard2.0/Microsoft.Azure.SignalR.dll",
+        "lib/netstandard2.0/Microsoft.Azure.SignalR.xml",
+        "microsoft.azure.signalr.1.4.0.nupkg.sha512",
+        "microsoft.azure.signalr.nuspec",
+        "microsoft.png"
+      ]
+    },
+    "Microsoft.Azure.SignalR.Protocols/1.4.0": {
+      "sha512": "IvssiuEZ9JLbGuBTvHXyUfHVPhGlyk3F2gPCdIdZ+MtdshpdrVasWAYpSBO7821lJcDXPY8YFKK3R3veAVfFxw==",
+      "type": "package",
+      "path": "microsoft.azure.signalr.protocols/1.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Microsoft.Azure.SignalR.Protocols.dll",
+        "lib/netstandard2.0/Microsoft.Azure.SignalR.Protocols.xml",
+        "microsoft.azure.signalr.protocols.1.4.0.nupkg.sha512",
+        "microsoft.azure.signalr.protocols.nuspec",
+        "microsoft.png"
       ]
     },
     "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
@@ -4528,6 +4728,35 @@
         "swashbuckle.aspnetcore.swaggerui.nuspec"
       ]
     },
+    "System.Buffers/4.5.0": {
+      "sha512": "pL2ChpaRRWI/p4LXyy4RgeWlYF2sgfj/pnVMvBqwNFr5cXg7CXNnWZWxrOONLg8VGdFB8oB+EG2Qw4MLgTOe+A==",
+      "type": "package",
+      "path": "system.buffers/4.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.1/System.Buffers.dll",
+        "lib/netstandard1.1/System.Buffers.xml",
+        "lib/netstandard2.0/System.Buffers.dll",
+        "lib/netstandard2.0/System.Buffers.xml",
+        "lib/uap10.0.16299/_._",
+        "ref/net45/System.Buffers.dll",
+        "ref/net45/System.Buffers.xml",
+        "ref/netcoreapp2.0/_._",
+        "ref/netstandard1.1/System.Buffers.dll",
+        "ref/netstandard1.1/System.Buffers.xml",
+        "ref/netstandard2.0/System.Buffers.dll",
+        "ref/netstandard2.0/System.Buffers.xml",
+        "ref/uap10.0.16299/_._",
+        "system.buffers.4.5.0.nupkg.sha512",
+        "system.buffers.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "System.Collections/4.3.0": {
       "sha512": "3Dcj85/TBdVpL5Zr+gEEBUuFe2icOnLalmEh9hfck1PTYbbyWuZgh4fmm2ysCLTrqLQw6t3TgTyJ+VLp+Qb+Lw==",
       "type": "package",
@@ -5684,6 +5913,29 @@
         "ref/xamarinwatchos10/_._",
         "system.io.filesystem.primitives.4.3.0.nupkg.sha512",
         "system.io.filesystem.primitives.nuspec"
+      ]
+    },
+    "System.IO.Pipelines/4.6.0": {
+      "sha512": "xOqFH7Uiemd/QzUl2Di23cZCrc2CmgijeTDyFKDT8+jjpH+ynf7WoLUExY2AYGyGBjGL5Kn6DZScnqeg91zQOQ==",
+      "type": "package",
+      "path": "system.io.pipelines/4.6.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netcoreapp3.0/System.IO.Pipelines.dll",
+        "lib/netcoreapp3.0/System.IO.Pipelines.xml",
+        "lib/netstandard1.3/System.IO.Pipelines.dll",
+        "lib/netstandard1.3/System.IO.Pipelines.xml",
+        "lib/netstandard2.0/System.IO.Pipelines.dll",
+        "lib/netstandard2.0/System.IO.Pipelines.xml",
+        "ref/netcoreapp2.0/System.IO.Pipelines.dll",
+        "ref/netcoreapp2.0/System.IO.Pipelines.xml",
+        "system.io.pipelines.4.6.0.nupkg.sha512",
+        "system.io.pipelines.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
       ]
     },
     "System.Linq/4.3.0": {
@@ -8133,6 +8385,7 @@
       "Microsoft.AspNetCore.Authentication.OpenIdConnect >= 5.0.1",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 5.0.1",
       "Microsoft.AspNetCore.Identity.UI >= 5.0.1",
+      "Microsoft.Azure.SignalR >= 1.4.0",
       "Microsoft.EntityFrameworkCore >= 5.0.1",
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.1",
       "Microsoft.EntityFrameworkCore.Sqlite >= 5.0.1",
@@ -8210,6 +8463,10 @@
           "Microsoft.AspNetCore.Identity.UI": {
             "target": "Package",
             "version": "[5.0.1, )"
+          },
+          "Microsoft.Azure.SignalR": {
+            "target": "Package",
+            "version": "[1.4.0, )"
           },
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",

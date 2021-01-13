@@ -27,10 +27,17 @@ namespace TesteSignalR.Hubs
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
+            var connections = _dbContext.HubConnections
+                    .Where(c => c.UserA.UserName == Context.UserIdentifier || c.UserB.UserName == Context.UserIdentifier);
+            var listeners = connections.Where(c => c.UserB.UserName == Context.UserIdentifier).Select(c => c.UserA.UserName).ToArray();
             _dbContext.HubConnections
-                .RemoveRange(_dbContext.HubConnections
-                    .Where(c => c.UserA.UserName == Context.UserIdentifier || c.UserB.UserName == Context.UserIdentifier));
-            return _dbContext.SaveChangesAsync();
+                .RemoveRange(connections);
+            _dbContext.SaveChanges();
+
+            var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+            string json = JsonSerializer.Serialize(new Coordinates(), options);
+
+            return Clients.Users(listeners).ReceiveCoordinates(json);
         }
 
         public Task Update(Coordinates coordinates)
